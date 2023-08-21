@@ -9,7 +9,7 @@ services:
     
     image: aymen065/chat
     ports:
-       - "808:8080"
+       - "80:8080"
 
     restart: on-failure
   
