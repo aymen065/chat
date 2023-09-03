@@ -37,11 +37,11 @@ services:
         -Dsolr.base.url=/solr
         -Dindex.subsystem.name=solr6
         -Dshare.host=127.0.0.1
-        -Dshare.port=80
+        -Dshare.port=8080
         -Dalfresco.host=localhost
-        -Dalfresco.port=80
+        -Dalfresco.port=8080
         -Dcsrf.filter.enabled=false
-        -Daos.baseUrlOverwrite=http://localhost/alfresco/aos
+        -Daos.baseUrlOverwrite=http://localhost:8080/alfresco/aos
         -Dmessaging.broker.url="failover:(nio://activemq:61616)?timeout=3000&jms.useCompression=true"
         -Ddeployment.method=DOCKER_COMPOSE
         -DlocalTransform.core-aio.url=http://transform-core-aio:8090/
@@ -61,12 +61,12 @@ services:
     mem_limit: 1g
     environment:
       REPO_HOST: "alfresco"
-      REPO_PORT: "80"
+      REPO_PORT: "8080"
       JAVA_OPTS: >-
         -XX:MinRAMPercentage=50
         -XX:MaxRAMPercentage=80
         -Dalfresco.host=localhost
-        -Dalfresco.port=80
+        -Dalfresco.port=8080
         -Dalfresco.context=alfresco
         -Dalfresco.protocol=http
   postgres:
@@ -85,7 +85,7 @@ services:
     environment:
       # Solr needs to know how to register itself with Alfresco
       SOLR_ALFRESCO_HOST: "alfresco"
-      SOLR_ALFRESCO_PORT: "80"
+      SOLR_ALFRESCO_PORT: "8080"
       # Alfresco needs to know how to call solr
       SOLR_SOLR_HOST: "solr6"
       SOLR_SOLR_PORT: "8983"
@@ -110,7 +110,7 @@ services:
     image: alfresco/alfresco-content-app:4.1.0
     mem_limit: 128m
     environment:
-      APP_BASE_SHARE_URL: "http://localhost/aca/#/preview/s"
+      APP_BASE_SHARE_URL: "http://localhost:8080/aca/#/preview/s"
   control-center:
     image: quay.io/alfresco/alfresco-control-center:8.1.0
     mem_limit: 128m
@@ -131,7 +131,7 @@ services:
       - content-app
       - control-center
     ports:
-      - "80:80"
+      - "80:8080"
     links:
       - content-app
       - alfresco
