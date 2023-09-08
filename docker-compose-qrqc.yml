@@ -1,0 +1,58 @@
+version: '3.7'
+services:
+  qrqc-web-app:
+    image: aymen065/qrqc-api
+    container_name: qrqc-web-container
+    ports:
+      - "5001:5001"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:sqlserver://mssqlserver:1433;databaseName=QRQC
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD: Misfat*2121
+    networks:
+      - qrqc_network
+    depends_on:
+      - mssqlserver
+
+  dbeaver:
+    image: dbeaver/cloudbeaver
+    container_name: dbeaver-container
+    ports:
+      - "8080:8978"
+    networks:
+      - qrqc_network
+    depends_on:
+      - mssqlserver
+
+  angular-nginx-app:
+    image: aymen065/qrqc-web
+    container_name: qrqc-front-container
+    ports:
+      - "2000:80"
+    networks:
+      - qrqc_network
+
+  
+  mssqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: Misfat*2121
+      MSSQL_PID: Express
+      MSSQL_DB: QRQC
+      # MSSQL_USER: ADMIN
+      # MSSQL_PASSWORD: Misfat*2121
+    container_name: mssqlserver-container
+    ports:
+      - 1433:1433
+    volumes:
+      - ./mssqldb:/var/opt/mssql
+    networks:
+      - qrqc_network
+
+networks:
+  qrqc_network:
+    driver: bridge
+
+volumes:
+  qrqc_volume:
